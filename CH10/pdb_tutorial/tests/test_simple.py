@@ -1,7 +1,9 @@
 import unittest
-
+import dicegame
 
 class TestStringMethods(unittest.TestCase):
+
+    d_g = dicegame()
 
     def test_upper(self):
         self.assertEqual('foo'.upper(), 'FOO')
