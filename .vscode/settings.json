@@ -7,5 +7,5 @@
   "python.testing.nosetestsEnabled": false,
   "python.testing.unittestEnabled": true,
   "python.linting.enabled": false,
-  "python.pythonPath": "formation/bin/python"
+  "python.pythonPath": "/Users/sam-nicolai.johnston/code/formationpython/formation/bin/python3"
 }
