@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../SSENSE/.idea/SSENSE.iml" filepath="$PROJECT_DIR$/../SSENSE/.idea/SSENSE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/formationpython.iml" filepath="$PROJECT_DIR$/.idea/formationpython.iml" />
+    </modules>
+  </component>
+</project>

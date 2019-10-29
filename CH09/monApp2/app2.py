@@ -5,8 +5,8 @@ import requests
 class ssenseProductClass:
     def on_get(self, req, resp):
         """This is our listenner"""
-        print(req.body())
-        data = {}
+        data = json.loads(req.stream.read())
+        print(data)
 
         content = {
             'name': 'Black Ruben Coat',
@@ -16,10 +16,10 @@ class ssenseProductClass:
             'code': '192078M176001',
             'image': 'https://img.ssensemedia.com/images//192078M176001_1/nudie-jeans-black-ruben-coat.jpg'
         }
-        #output = {}
-        #if data['method'] == 'get-price':
-        #    output['value'] = content['name']
-        #resp.body = json.dumps(output)
+        output = {}
+        if data['method'] == 'get-price':
+            output['value'] = content['name']
+        resp.body = json.dumps(output)
 
 
 api = falcon.API()
