@@ -48,7 +48,7 @@ jobs:
           name: run flake8 only in test directory of pdb_tutorial
           command: |
             . venv/bin/activate
-            cd CH10/pdb_tutorial/tests && flake8 . --exclude ./.ipynb_checkpoints/
+            cd CH10/pdb_tutorial/tests && flake8 . --exclude ./.ipynb_checkpoints/ --output-file test-reports
       - run:
           name: run tests
           command: |
