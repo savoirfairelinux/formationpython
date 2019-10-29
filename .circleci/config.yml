@@ -45,6 +45,10 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
+          name: run flake8 only in test directory of pdb_tutorial
+          command: |
+            cd CH10/pdb_tutorial/tests && flake8 . --exclude ./.ipynb_checkpoints/
+      - run:
           name: run tests
           command: |
             . venv/bin/activate
