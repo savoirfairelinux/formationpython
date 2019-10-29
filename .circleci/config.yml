@@ -52,7 +52,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            ls && python -m unittest discover -v
+            cd CH10/pdb_tutorial && python -m unittest discover -v
 
       - store_artifacts:
           path: test-reports
