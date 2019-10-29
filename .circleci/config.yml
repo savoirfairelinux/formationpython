@@ -45,10 +45,14 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
-          name: run tests
+          name: run flake8 only in test directory of pdb_tutorial
           command: |
             . venv/bin/activate
-            python -m unittest discover -v
+            cd CH10/pdb_tutorial/tests && flake8 . --exclude ./.ipynb_checkpoints/ 
+      - run:
+          name: run tests
+          command: |
+            cd CH10/pdb_tutorial && python -m unittest discover -v
 
       - store_artifacts:
           path: test-reports
