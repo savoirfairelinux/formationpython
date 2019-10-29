@@ -1,1 +1,6 @@
 flake8
+requests
+falcon
+msgpack
+lxml
+falcon_cors
