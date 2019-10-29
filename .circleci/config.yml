@@ -47,12 +47,12 @@ jobs:
       - run:
           name: run flake8 only in test directory of pdb_tutorial
           command: |
+            . venc/bin/activate
             cd CH10/pdb_tutorial/tests && flake8 . --exclude ./.ipynb_checkpoints/
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
-            python -m unittest discover -v
+            ls && python -m unittest discover -v
 
       - store_artifacts:
           path: test-reports
