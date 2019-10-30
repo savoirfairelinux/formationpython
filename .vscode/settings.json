@@ -1,0 +1,11 @@
+{
+  "python.testing.unittestArgs": [
+    "discover",
+    "-v",
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.unittestEnabled": true,
+  "python.linting.enabled": false,
+  "python.pythonPath": "/Users/sam-nicolai.johnston/code/formationpython/formation/bin/python3"
+}
