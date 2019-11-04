@@ -1,7 +1,6 @@
 class Stack:
     def __init__(self):
         self._stack = []
-        pass
 
     def push(self, item):
         self._stack.insert(0, item)
