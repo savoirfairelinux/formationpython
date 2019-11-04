@@ -6,3 +6,4 @@ def pair_impair(lst):
             print("impair")    
 
 pair_impair(['6', '7', '8'])
+
