@@ -17,4 +17,6 @@ class Stack:
         self.stack.pop()
 
     def top(self):
-        return self.stack[-1]
+        if self.__len__():
+            return self.stack[-1]
+        return None
