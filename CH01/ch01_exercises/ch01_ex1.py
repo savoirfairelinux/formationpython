@@ -16,5 +16,5 @@ def calculate_grade(grade: int):
     for key in grade_list.keys():
         if grade_list[key][1] >= grade >= grade_list[key][0]:
             final_grad = key
-
+            break
     return final_grad
