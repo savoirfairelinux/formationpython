@@ -6,9 +6,9 @@
 def odd_even(some_list):
     for arg in some_list:
         if (arg % 2 == 0):
-            print('Odd')
-        else:
             print('Even')
+        else:
+            print('Odd')
 
 
 if __name__ == "__main__":
