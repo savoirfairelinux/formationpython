@@ -1,5 +1,5 @@
 import unittest
-from dicegame.die import Die
+from ..dicegame.die import Die
 
 
 class TestStringMethods(unittest.TestCase):
