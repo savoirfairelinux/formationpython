@@ -12,5 +12,9 @@ class Person:
     def print_greeting(self, other_name):
         print(self.greet(other_name))
 
-person = Person("Marc")
-person.print_greeting("Richard")
+
+person1 = Person("Marc")
+person1.print_greeting("Richard")
+
+
+person2 = Person("Marc2")
