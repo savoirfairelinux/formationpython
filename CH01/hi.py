@@ -3,6 +3,11 @@ import math
 
 
 '''
+
+
+Questions: Function overloading
+Constructor overloading
+
 # asdfasdfasdf
 # asdf asdfasdf
 
@@ -11,6 +16,9 @@ import math
 # List muutable
 # Tuple immutable
 # String immutable
+
+*sdf // Upack tupple
+**234 // Unpack by keywords if a map
 
 '''
 
