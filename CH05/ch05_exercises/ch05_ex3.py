@@ -14,7 +14,9 @@ class Stack:
         self.stack.append(item)
 
     def pop(self):
-        self.stack.pop()
+        if self.__len__():
+            self.stack.pop()
+        return None
 
     def top(self):
         if self.__len__():
