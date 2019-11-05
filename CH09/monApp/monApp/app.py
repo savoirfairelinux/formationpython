@@ -7,6 +7,18 @@ from falcon_cors import CORS
 
 
 class ssenseProductClass:
+
+    def validate_image_type(req, resp, resource, params):
+        body = json.loads(resp.body)
+        # body = json.load(resp.body)
+        # print(type(resp.body))
+        for node in body:
+            if body[node][2][-3:] not in params:
+                print(' not valid extension')
+
+            # raise falcon.HTTPBadRequest('Bad request', msg)
+
+    @falcon.after(validate_image_type, ['jpg'])
     def on_get(self, req, resp):
         """"
         Eg:
