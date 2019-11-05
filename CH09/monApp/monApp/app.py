@@ -7,6 +7,13 @@ from falcon_cors import CORS
 
 
 class ssenseProductClass:
+
+    def validate_req_type(req, resp, resource, params, allowed_types):
+        if req.content_type not in allowed_types:
+            msg = 'Request content type not allowed'
+            raise falcon.HTTPBadRequest('Bad request', msg)
+
+    @falcon.before(validate_req_type, ['application/json'])
     def on_get(self, req, resp):
         """"
         Eg:
