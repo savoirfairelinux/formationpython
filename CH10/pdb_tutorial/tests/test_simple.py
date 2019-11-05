@@ -33,7 +33,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue("Round 5" in output)
         self.assertTrue("Round 6" in output)
         self.assertEqual(runner.loses, 6)
-        self.assertEqual(runner.round, 7) # 7 because not zero based
+        self.assertEqual(runner.round, 7)  # 7 because not zero based
 
     def test_upper(self):
         self.assertEqual('foo'.upper(), 'FOO')
