@@ -4,6 +4,7 @@ from .utils import i_just_throw_an_exception
 class GameRunner:
 
     def __init__(self):
+        self.consecutive_wins = 0
         self.dice = Die.create_dice(5)
         self.reset()
 
@@ -53,6 +54,7 @@ class GameRunner:
                 break
 
             prompt = input("Would you like to play again?[Y/n]: ")
+            prompt = str(prompt)
 
             if prompt.lower() == 'y' or prompt == '':
                 continue
