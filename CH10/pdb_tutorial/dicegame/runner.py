@@ -1,21 +1,27 @@
+import sys
+
 from .die import Die
 from .utils import i_just_throw_an_exception
 
+
 class GameRunner:
+    round = 1
+    wins = 0
+    loses = 0
 
     def __init__(self):
         self.dice = Die.create_dice(5)
-        self.reset()
+        # self.reset()
 
-    def reset(self):
-        self.round = 1
-        self.wins = 0
-        self.loses = 0
+    # def reset(self):
+    #     self.round = 1
+    #     self.wins = 0
+    #     self.loses = 0
 
     def answer(self):
         total = 0
         for die in self.dice:
-            total += 1
+            total += die.value
         return total
 
     @classmethod
@@ -36,16 +42,16 @@ class GameRunner:
 
             if guess == runner.answer():
                 print("Congrats, you can add like a 5 year old...")
-                runner.wins += 1
+                GameRunner.wins += 1
                 c += 1
             else:
                 print("Sorry that's wrong")
                 print("The answer is: {}".format(runner.answer()))
                 print("Like seriously, how could you mess that up")
-                runner.loses += 1
+                GameRunner.loses += 1
                 c = 0
             print("Wins: {} Loses {}".format(runner.wins, runner.loses))
-            runner.round += 1
+            GameRunner.round += 1
 
             if c == 6:
                 print("You won... Congrats...")
@@ -54,7 +60,9 @@ class GameRunner:
 
             prompt = input("Would you like to play again?[Y/n]: ")
 
-            if prompt == 'y' or prompt == '':
+            if prompt in ['y', 'Y'] or prompt == '':
                 continue
+            elif prompt in ['n', 'N']:
+                sys.exit()
             else:
                 i_just_throw_an_exception()
