@@ -19,20 +19,23 @@ class GameRunner:
         return total
 
     @classmethod
-    def run(cls):
+    def run(cls, guess=None, prompt=None):
         # Probably counts wins or something.
         # Great variable name, 10/10.
         c = 0
+        runner = cls()
+
         while True:
-            runner = cls()
 
             print("Round {}\n".format(runner.round))
 
             for die in runner.dice:
                 print(die.show())
 
-            guess = input("Sigh. What is your guess?: ")
-            guess = int(guess)
+
+            if not guess:
+                guess = input("Sigh. What is your guess?: ")
+                guess = int(guess)
 
             if guess == runner.answer():
                 print("Congrats, you can add like a 5 year old...")
@@ -43,7 +46,7 @@ class GameRunner:
                 print("The answer is: {}".format(runner.answer()))
                 print("Like seriously, how could you mess that up")
                 runner.loses += 1
-                c = 0
+                c += 1
             print("Wins: {} Loses {}".format(runner.wins, runner.loses))
             runner.round += 1
 
@@ -52,7 +55,8 @@ class GameRunner:
                 print("The fact it took you so long is pretty sad")
                 break
 
-            prompt = input("Would you like to play again?[Y/n]: ")
+            if not prompt:
+                prompt = input("Would you like to play again?[Y/n]: ")
 
             if prompt.lower() == 'y' or prompt == '':
                 continue
@@ -61,3 +65,5 @@ class GameRunner:
                 break;
             else:
                 i_just_throw_an_exception()
+
+        return runner
