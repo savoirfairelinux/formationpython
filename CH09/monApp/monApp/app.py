@@ -6,20 +6,9 @@ import json
 from falcon_cors import CORS
 
 def json_serializer(req, resp, exception):
-    representation = None
-
-    preferred = req.client_prefers(('application/x-yaml',
-                                    'application/json'))
-
-    if exception.has_representation and preferred is not None:
-        if preferred == 'application/json':
-            representation = exception.to_json()
-        else:
-            representation = yaml.dump(exception.to_dict(),
-                                       encoding=None)
-        resp.body = representation
-        resp.content_type = preferred
-
+    if exception.has_representation:
+        resp.body = exception.to_json()
+        resp.content_type = 'application/json'
     resp.append_header('Vary', 'Accept')
 
 class ssenseProductClass:
