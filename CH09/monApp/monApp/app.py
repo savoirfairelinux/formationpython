@@ -8,7 +8,7 @@ from falcon_cors import CORS
 
 class ssenseProductClass:
 
-    def validate_content_type(self, req, res, params):
+    def validate_content_type(req, res, resource, params):
         if req.content_type != 'application/json':
             raise falcon.HTTPBadRequest('bad request', 'not application/json')
 

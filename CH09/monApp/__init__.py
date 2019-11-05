@@ -1,1 +1,0 @@
-from monApp import app
