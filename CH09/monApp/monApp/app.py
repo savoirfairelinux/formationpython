@@ -5,8 +5,29 @@ from lxml import html
 import json
 from falcon_cors import CORS
 
+def json_serializer(req, resp, exception):
+    representation = None
+
+    preferred = req.client_prefers(('application/x-yaml',
+                                    'application/json'))
+
+    if exception.has_representation and preferred is not None:
+        if preferred == 'application/json':
+            representation = exception.to_json()
+        else:
+            representation = yaml.dump(exception.to_dict(),
+                                       encoding=None)
+        resp.body = representation
+        resp.content_type = preferred
+
+    resp.append_header('Vary', 'Accept')
 
 class ssenseProductClass:
+
+    def validate_req_type(req, resp, resource, params, allowed_types):
+        if req.content_type not in allowed_types:
+            msg = 'Request content type not allowed'
+            raise falcon.HTTPBadRequest('Bad request', msg)
 
     def validate_req_type(req, resp, resource, params, allowed_types):
         if req.content_type not in allowed_types:
@@ -53,3 +74,4 @@ class ssenseProductClass:
 cors = CORS(allow_all_origins=True)
 api = application = falcon.API()
 api.add_route('/getProducts', ssenseProductClass())
+api.set_error_serializer(json_serializer);
