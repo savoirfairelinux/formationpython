@@ -13,7 +13,7 @@ class TestCap(unittest.TestCase):
         self.assertEqual(result, 'Toto')
 
     def test_multiple_word(self):
-        text = 'toto tata '
+        text = 'toto tata'
         result = cap_text(text)
         self.assertEqual(result, 'Toto Tata')
 
