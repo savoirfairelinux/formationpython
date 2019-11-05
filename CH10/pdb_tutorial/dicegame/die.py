@@ -12,6 +12,7 @@ class Die:
     """
 
     def __init__(self):
+        self.value = 0
         self.roll()
 
     def roll(self):
