@@ -10,7 +10,12 @@ class TestCap(unittest.TestCase):
     def test_one_word(self):
         text = 'toto'
         result = cap_text(text)
-        self.assertEqual(result, 'TOTO')
+        self.assertEqual(result, 'Toto')
+
+    def test_multiple_word(self):
+        text = 'toto tata '
+        result = cap_text(text)
+        self.assertEqual(result, 'Toto Tata')
 
 if __name__ == '__main__':
     unittest.main()
