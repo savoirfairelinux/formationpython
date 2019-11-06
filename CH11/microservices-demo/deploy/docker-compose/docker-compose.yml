@@ -44,7 +44,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=socksdb
     ports:
-      - 5432:3306
+      - 5433:3306
   catalogue-db-admin:
     image: adminer
     restart: always
