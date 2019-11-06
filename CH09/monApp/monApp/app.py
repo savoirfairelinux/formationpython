@@ -11,12 +11,8 @@ def json_serializer(req, resp, exception):
         resp.content_type = 'application/json'
     resp.append_header('Vary', 'Accept')
 
-class ssenseProductClass:
 
-    def validate_req_type(req, resp, resource, params, allowed_types):
-        if req.content_type not in allowed_types:
-            msg = 'Request content type not allowed'
-            raise falcon.HTTPBadRequest('Bad request', msg)
+class ssenseProductClass:
 
     def validate_req_type(req, resp, resource, params, allowed_types):
         if req.content_type not in allowed_types:
@@ -34,10 +30,11 @@ class ssenseProductClass:
         try:
             #import ipdb; ipdb.set_trace()
             url = 'https://www.ssense.com/en-ca/men/clothing?page=3'
+            #import ipdb; ipdb.set_trace()
             #url = json.loads(req.stream.read())['url']
             page = requests.get(url)
             tree = html.fromstring(page.content)
-
+            
             # based on our analysis of the web page structure we can suppose
             # that products names are located in the xpath
             # //p[@itemprop="name"]
@@ -58,6 +55,9 @@ class ssenseProductClass:
         except falcon.HTTPInvalidHeader as e:
             resp.body = str(e)
             resp.status = falcon.HTTP_404
+        except json.decoder.JSONDecodeError as e:
+            resp.body = str(e)
+            resp.status = falcon.HTTP_500
 
 
 cors = CORS(allow_all_origins=True)
