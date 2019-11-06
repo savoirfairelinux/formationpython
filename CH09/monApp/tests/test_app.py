@@ -1,3 +1,5 @@
+import json
+
 import falcon
 from falcon import testing
 #import msgpack

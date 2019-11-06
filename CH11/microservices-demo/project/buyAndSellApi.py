@@ -50,7 +50,23 @@ class DBConnect:
                 connection.close()
         else:
             raise falcon.HTTPInternalServerError
-    
+
+
+    def update_product_price(self, product, price):
+        connection = self.connect()
+        if connection:
+            try:
+                cr = connection.cursor()
+                sql_query = 'UPDATE sock SET price="' + str(price) + '" where name="' + str(product) + '"'
+                cr.execute(sql_query)
+                print(sql_query)
+                connection.commit()
+                return True
+            except Exception as e:
+                print(e)
+            finally:
+                connection.close()
+
     def productInformation(self):
         connection = self.connect()
         if connection:
@@ -90,10 +106,30 @@ class productInformation:
     """ 
     This Class is implemented to return product information
     """
-    def on_put(self, req, resp, id):
+    def on_get(self, req, resp, id):
+        print(id)
         try:
             connect = DBConnect(id)
             content = connect.productInformation()
+            print(content)
+            if content:
+                resp.body = json.dumps(content)
+                resp.content_type = falcon.MEDIA_JSON
+                resp.status = falcon.HTTP_200
+            else:
+                resp.content_type = falcon.MEDIA_JSON
+                resp.status = falcon.HTTP_400
+
+        except falcon.HTTPInvalidHeader as e:
+            resp.body = str(e)
+            resp.status = falcon.HTTP_404
+
+    def on_put(self, req, resp, id):
+        raw_json = json.loads(req.bounded_stream.read())
+        try:
+            connect = DBConnect(id)
+            content = connect.update_product_price(raw_json['product'], raw_json['price'])
+            print(content)
             if content:
                 resp.body = json.dumps(content)
                 resp.content_type = falcon.MEDIA_JSON

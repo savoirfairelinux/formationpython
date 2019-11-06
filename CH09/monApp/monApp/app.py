@@ -8,6 +8,7 @@ from falcon_cors import CORS
 
 
 class ssenseProductClass:
+
     """ 
     This Class is implemented to return products scrapped from the
     SSENS Store 
