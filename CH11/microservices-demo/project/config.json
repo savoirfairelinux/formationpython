@@ -1,5 +1,5 @@
 {
-    "dbServerName" : "192.168.49.117",
+    "dbServerName" : "127.0.0.1",
     "dbUser" : "root",
     "dbName" : "socksdb",
     "charSet" : "utf8mb4",

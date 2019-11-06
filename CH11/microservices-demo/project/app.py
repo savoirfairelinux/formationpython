@@ -33,6 +33,14 @@ def initialize_stores():
         finally:
             connection.close()
 
+def generate_customers(stores=['localhost'], quantity=10):
+    count = 0
+    while count < quantity:
+        yield Customer(stores)
+        count += 1
+
+
+
 def main():
     for address in addresses:
         stores.append(Store(address))
