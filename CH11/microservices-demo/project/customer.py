@@ -1,9 +1,11 @@
 import requests
 import random
+import json
+
 
 class Customer:
     
-    def __init__(self, stores=['localhost'], visits=1):
+    def __init__(self, stores=['172.16.17.132'], visits=1):
         self._budget = 100
         self._expected_buying_price = 0
         self.stores = stores
@@ -14,19 +16,21 @@ class Customer:
         #TODO: Multithreaded
         cheapest = (100, None)
         for store in stores:
-            price = get_store_price(store)
-            if price < cheapest:
+            price = self.get_store_price(store)
+            if price < cheapest[0]:
                 cheapest = (price, store)
+        self._expected_buying_price = cheapest[0]
         return cheapest
 
-    def get_store_price(self, store):
-        #TODO: Get Store 
-        price = 0
+    def get_store_price(self, store_address, product_name='Colourful'):
+        req=requests.get('http://' + store_address + ':8000/product/' + product_name)
+        price = json.loads(req.text)['price']
         return price
     
     def get_stores(self, size=None, visits=None):
         """Method that returns #(visits) random stores
         of a given number (size) of stores"""
+
         if visits:
             self.visits = visits
         if not size:
@@ -45,3 +49,8 @@ class Customer:
 
     def go_shopping_for_socks(self):
         self.shopping_stores = self.get_stores()
+        cheapest = self.find_cheapest(self.shopping_stores)
+        if not cheapest[1]:
+            return
+        self.new_product = self.buy_sock_from_store(str(cheapest[1]))
+        print("Bought from:"+ str(cheapest[1] + " at " + str(cheapest[0])))

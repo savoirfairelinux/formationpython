@@ -9,12 +9,19 @@ charSet = "utf8mb4"
 dbPort = 5432
 
 
-addresses = ['192.168.49.117']
+addresses = ['172.16.17.91',  # Simone
+             '172.16.17.81',  # Jean-Philippe
+             '172.16.17.30',  # Gary
+             '172.16.17.51',  # Yassine
+             '172.16.17.85',  # Marc
+             '172.16.17.132', # Bilal
+             '172.16.17.143',  # Mikhail
+             ] 
 stores = []
 product = {'sock_id':'3395a43e-2d88-40de-b95f-e00e1502085b',
            'name':'Colourful', 
-           'price':'10',
-           'count':'1000',
+           'price':'50',
+           'count':'100',
            }
 
 def initialize_stores():
@@ -33,7 +40,7 @@ def initialize_stores():
         finally:
             connection.close()
 
-def generate_customers(stores=['localhost'], quantity=10):
+def generate_customers(stores=['localhost'], quantity=10, visits=1):
     count = 0
     while count < quantity:
         yield Customer(stores)
@@ -45,6 +52,10 @@ def main():
     for address in addresses:
         stores.append(Store(address))
     initialize_stores()
+    customers = generate_customers(addresses, 500, 7)
+
+    for customer in customers:
+        customer.go_shopping_for_socks()
 
 if __name__ == "__main__":
     main()
