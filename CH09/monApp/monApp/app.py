@@ -38,11 +38,22 @@ class ssenseProductClass:
             resp.content_type = falcon.MEDIA_JSON
             resp.status = falcon.HTTP_200
 
+            print("============= RESPONSE ================")
+            print("Status: %s" % (resp.status))
+            print("body:\n%s" % (resp.body))
+            print("============= ^^^^^^^^ ================")
+
         except falcon.HTTPInvalidHeader as e:
+
+            print("============= Failed ================")
             resp.body = str(e)
             resp.status = falcon.HTTP_404
+            print("============= ^^^^^^ ================")
 
 
 cors = CORS(allow_all_origins=True)
 api = application = falcon.API()
 api.add_route('/getProducts', ssenseProductClass())
+print("======================== API ============================")
+print(api)
+print("======================== ^^^ ============================")
