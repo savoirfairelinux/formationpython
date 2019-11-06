@@ -88,6 +88,16 @@ services:
       - carts-db
     links:
       - catalogue-db
+  mongo-express-users:
+    image: mongo-express
+    ports:
+      - 8086:8081
+    environment:
+        - ME_CONFIG_MONGODB_SERVER=orders-db
+    depends_on:
+      - orders-db
+    links:
+      - orders-db
   orders:
     image: weaveworksdemos/orders:0.4.7
     hostname: orders
