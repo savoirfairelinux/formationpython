@@ -3,7 +3,7 @@ import falcon
 import json
 import requests
 from lxml import html
-
+import ipdb
 
 class DBConnect:
     def __init__(self, product_name):
@@ -66,7 +66,23 @@ class DBConnect:
                 connection.close()
         else:
             return False
-        
+
+    def updatePrice(self, price):
+        connection = self.connect()
+        if connection:
+            try:
+                cr = connection.cursor()
+                sql_query = 'UPDATE sock SET price="' + str(price) + '" where name="' + str(self.product_name) + '"'
+                cr.execute(sql_query)
+                print(sql_query)
+                connection.commit()
+                return {'done': True}
+            except Exception as e:
+                print(e)
+            finally:
+                connection.close()
+        else:
+            return False
 
 class buyProduct:
     """ 
@@ -90,7 +106,7 @@ class productInformation:
     """ 
     This Class is implemented to return product information
     """
-    def on_put(self, req, resp, id):
+    def on_get(self, req, resp, id):
         try:
             connect = DBConnect(id)
             content = connect.productInformation()
@@ -106,7 +122,23 @@ class productInformation:
             resp.body = str(e)
             resp.status = falcon.HTTP_404
 
-            
+    def on_put(self, req, resp, id):
+        try:
+            connect = DBConnect(id)
+            req_body_str = req.stream.read()
+            req_body = json.loads(req_body_str)
+            content = connect.updatePrice(req_body['price'])
+            if content:
+                resp.body = json.dumps(content)
+                resp.content_type = falcon.MEDIA_JSON
+                resp.status = falcon.HTTP_200
+            else:
+                resp.content_type = falcon.MEDIA_JSON
+                resp.status = falcon.HTTP_400
+        except falcon.HTTPInvalidHeader as e:
+            resp.body = str(e)
+            resp.status = falcon.HTTP_404
+
 
 api = application = falcon.API()
 api.add_route('/buy/{id}', buyProduct())
