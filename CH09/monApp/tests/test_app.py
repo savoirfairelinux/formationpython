@@ -5,11 +5,8 @@ from falcon import testing
 #import msgpack
 import json
 import pytest
-<<<<<<< HEAD
-=======
 from unittest.mock import patch
 from ..monApp.app import ssenseProductClass
->>>>>>> master
 
 from ..monApp.app import api
 
