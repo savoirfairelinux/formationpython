@@ -5,19 +5,21 @@ from lxml import html
 import json
 from falcon_cors import CORS
 
+def json_serializer(req, resp, exception):
+    if exception.has_representation:
+        resp.body = exception.to_json()
+        resp.content_type = 'application/json'
+    resp.append_header('Vary', 'Accept')
 
 
 class ssenseProductClass:
-    """ 
-    This Class is implemented to return products scrapped from the
-    SSENS Store 
-    """
-    def data_type(req, resp, resource):
-        if req.content_type != falcon.MEDIA_JSON:
-            msg = {'Error': 'Wrong data type ! Use Content-Type=application/json'}
+
+    def validate_req_type(req, resp, resource, params, allowed_types):
+        if req.content_type not in allowed_types:
+            msg = 'Request content type not allowed'
             raise falcon.HTTPBadRequest('Bad request', msg)
-    
-    @falcon.after(data_type)
+
+    @falcon.before(validate_req_type, ['application/json'])
     def on_get(self, req, resp):
         """"
         Eg:
@@ -61,3 +63,4 @@ class ssenseProductClass:
 cors = CORS(allow_all_origins=True)
 api = application = falcon.API()
 api.add_route('/getProducts', ssenseProductClass())
+api.set_error_serializer(json_serializer);
