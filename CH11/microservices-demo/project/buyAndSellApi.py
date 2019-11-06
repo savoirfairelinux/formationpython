@@ -32,9 +32,7 @@ class DBConnect:
         connection = self.connect()
         if connection:
             try:
-                cr = connection.cursor()  
-                # Check availaiblity
-                #import ipdb; ipdb.set_trace()
+                cr = connection.cursor()
                 sql_query = 'SELECT count from sock where name="' + str(self.product_name) + '"'
                 cr.execute(sql_query)
                 quantity = cr.fetchall()[0][0]
@@ -52,24 +50,52 @@ class DBConnect:
                 connection.close()
         else:
             raise falcon.HTTPInternalServerError
+    
+    def productInformation(self):
+        connection = self.connect()
+        if connection:
+            try:
+                cr = connection.cursor()
+                sql_query = 'SELECT name, count, price from sock where name="' + str(self.product_name) + '"'
+                cr.execute(sql_query)
+                data = cr.fetchall()[0]
+                return {'name': data[0], 'count': data[1], 'price': data[2]}
+            except Exception as e:
+                print(e)
+            finally:
+                connection.close()
+        else:
+            return False
         
 
 class buyProduct:
     """ 
     This Class is implemented to Buy a Product
     """
-#    def data_type(req, resp, resource):
-#        if req.content_type != falcon.MEDIA_JSON:
-#            msg = {'Error': 'Wrong data type ! Use Content-Type=application/json'}
-#            raise falcon.HTTPBadRequest('Bad request', msg)
-#    
-#    @falcon.after(data_type)
     def on_put(self, req, resp, id):
         try:
-            #url = json.loads(req.stream.read())['url']
-            #resp.body = json.dumps({'id': id})
             connect = DBConnect(id)
             if connect.buyProduct():
+                resp.content_type = falcon.MEDIA_JSON
+                resp.status = falcon.HTTP_200
+            else:
+                resp.content_type = falcon.MEDIA_JSON
+                resp.status = falcon.HTTP_404
+
+        except falcon.HTTPInvalidHeader as e:
+            resp.body = str(e)
+            resp.status = falcon.HTTP_400
+
+class productInformation:
+    """ 
+    This Class is implemented to return product information
+    """
+    def on_put(self, req, resp, id):
+        try:
+            connect = DBConnect(id)
+            content = connect.productInformation()
+            if content:
+                resp.body = json.dumps(content)
                 resp.content_type = falcon.MEDIA_JSON
                 resp.status = falcon.HTTP_200
             else:
@@ -80,7 +106,8 @@ class buyProduct:
             resp.body = str(e)
             resp.status = falcon.HTTP_404
 
+            
 
 api = application = falcon.API()
 api.add_route('/buy/{id}', buyProduct())
-#api.add_route('/product/{id}', productInformation())
+api.add_route('/product/{id}', productInformation())
