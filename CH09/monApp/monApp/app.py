@@ -18,7 +18,7 @@ class ssenseProductClass:
 
             # raise falcon.HTTPBadRequest('Bad request', msg)
 
-    @falcon.after(validate_image_type, ['jpg'])
+    # @falcon.after(validate_image_type, ['jpg'])
     def on_get(self, req, resp):
         """"
         Eg:
