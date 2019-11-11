@@ -3,4 +3,8 @@ def someFn():
     for i in range(len(lst) - 2):
         print(list(lst[i:i+3]))
 
-someFn()
+def someFn2():
+    result = [list(range(i, i + 3)) for i in range(1, 8)]
+    print(*result, sep = '\n')
+
+someFn2()
