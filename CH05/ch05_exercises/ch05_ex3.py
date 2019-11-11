@@ -10,7 +10,7 @@ class Stack:
         return self
 
     def top(self):
-        return self.stack[len(self.stack) - 1]
+        return self.stack[-1]
 
     def __len__(self):
         return len(self.stack)
