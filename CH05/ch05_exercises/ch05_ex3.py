@@ -15,6 +15,9 @@ class Stack:
     def __len__(self):
         return len(self.stack)
 
+    def __bool__(self):
+        return len(self.stack)
+
 stack = Stack()
 
 print(len(stack))
