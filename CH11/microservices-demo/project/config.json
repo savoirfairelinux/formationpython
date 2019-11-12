@@ -3,5 +3,5 @@
     "dbUser" : "root",
     "dbName" : "socksdb",
     "charSet" : "utf8mb4",
-    "dbPort" : 5432
+    "dbPort" : 5433
 }

@@ -72,9 +72,9 @@ class buyProduct:
     """ 
     This Class is implemented to Buy a Product
     """
-    def on_put(self, req, resp, id):
+    def on_put(self, req, resp, name):
         try:
-            connect = DBConnect(id)
+            connect = DBConnect(name)
             if connect.buyProduct():
                 resp.content_type = falcon.MEDIA_JSON
                 resp.status = falcon.HTTP_200
@@ -90,9 +90,9 @@ class productInformation:
     """ 
     This Class is implemented to return product information
     """
-    def on_put(self, req, resp, id):
+    def on_get(self, req, resp, name):
         try:
-            connect = DBConnect(id)
+            connect = DBConnect(name)
             content = connect.productInformation()
             if content:
                 resp.body = json.dumps(content)
@@ -106,8 +106,7 @@ class productInformation:
             resp.body = str(e)
             resp.status = falcon.HTTP_404
 
-            
 
 api = application = falcon.API()
-api.add_route('/buy/{id}', buyProduct())
-api.add_route('/product/{id}', productInformation())
+api.add_route('/buy/{name}', buyProduct())
+api.add_route('/product/{name}', productInformation())
