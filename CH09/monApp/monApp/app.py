@@ -71,10 +71,12 @@ class ssenseProductClass:
             conn = sqlite3.connect('mydb')
             c = conn.cursor()
 
+            def getProductFields(buyer):
+                return ','.join([f'"{val}"' for val in products[buyer]])
+
             values = ','.join([
-                f'("{product}",' +
-                ','.join([f'"{val}"' for val in products[product]]) + ')'
-                for product in products
+                f'("{buyer}",{getProductFields(buyer)})'
+                for buyer in products
             ])
 
             print(values)
