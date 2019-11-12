@@ -6,6 +6,7 @@ import json
 from falcon_cors import CORS
 import sqlite3
 
+
 class ssenseProductClass:
     """
     This Class is implemented to return products scrapped from the
@@ -27,12 +28,11 @@ class ssenseProductClass:
         try:
             buyer = json.loads(req.stream.read())['buyer']
             conn = sqlite3.connect('mydb')
+
             c = conn.cursor()
-            res = c.execute(f"SELECT * FROM stocks2 WHERE buyer = '{buyer}'")
+            c.execute(f"SELECT * FROM stocks2 WHERE buyer = '{buyer}'")
 
-            data = c.fetchall()
-
-            resp.body = json.dumps(data)
+            resp.body = json.dumps(c.fetchall())
             resp.content_type = falcon.MEDIA_JSON
             resp.status = falcon.HTTP_200
 
@@ -43,7 +43,6 @@ class ssenseProductClass:
             resp.body = str(e)
             resp.status = falcon.HTTP_500
 
-
     @falcon.after(data_type)
     def on_put(self, req, resp):
         """"
@@ -53,17 +52,11 @@ class ssenseProductClass:
         }
         """
         try:
-            #import ipdb; ipdb.set_trace()
-            url = 'https://www.ssense.com/en-ca/men/clothing?page=3'
-            #import ipdb; ipdb.set_trace()
-            #url = json.loads(req.stream.read())['url']
+            url = json.loads(req.stream.read())['url']
+
             page = requests.get(url)
             tree = html.fromstring(page.content)
 
-            # based on our analysis of the web page structure we can suppose
-            # that products names are located in the xpath
-            # //p[@itemprop="name"]
-            # /text()
             brands = tree.xpath(
                 '//figcaption/p[@class="product-name-plp"]/text()')
             buyers = tree.xpath('//figcaption/p[@class="bold"]/text()')
@@ -71,15 +64,21 @@ class ssenseProductClass:
             pictures = tree.xpath('//picture/img/@*[1]')
             links = tree.xpath(
                 '//figure[@class="browsing-product-item"]/a/@href')
+
             products = dict(zip(buyers, zip(brands, prices, pictures,
-                                     links)))
+                                            links)))
 
             conn = sqlite3.connect('mydb')
             c = conn.cursor()
-            # Insert a row of data
-            for product in products:
-                values = ','.join([f"\'{val}\'" for val in products[product]])
-                c.execute(f"INSERT INTO stocks2 VALUES (\"{product}\", {values})")
+
+            values = ','.join([
+                f'("{product}",' +
+                ','.join([f'"{val}"' for val in products[product]]) + ')'
+                for product in products
+            ])
+
+            print(values)
+            c.execute(f'INSERT INTO stocks2 VALUES {values}')
 
             conn.commit()
 
