@@ -17,7 +17,7 @@ class ssenseProductClass:
             msg = {'Error': 'Wrong data type ! Use Content-Type=application/json'}
             raise falcon.HTTPBadRequest('Bad request', msg)
     
-    @falcon.after(data_type)
+    #@falcon.after(data_type)
     def on_get(self, req, resp):
         """"
         Eg:

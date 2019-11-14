@@ -1,4 +1,14 @@
 
+#from calculs import calculer_taxes as ct
 import calculs
+from calculs import calculer_taxes
 
-print("Taxes =", calculs.calculer_taxes(9.95))
+class A:
+    pass
+
+
+def main():
+    print("Execute main")
+    
+if __name__ == '__main__':
+    main()
