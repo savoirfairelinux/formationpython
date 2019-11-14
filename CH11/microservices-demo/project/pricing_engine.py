@@ -23,12 +23,12 @@ should_update_price = False
 def floor(value):
    return math.floor(value * 100) / 100
 
-def get_expected_values(stores, msrp = 10):
+def get_expected_values(stores, cost = 10):
     profits = defaultdict(int)
     number_of_stores = len(stores)
 
     if (number_of_stores == 1):
-        return { stores[0][0]: stores[0][1] - msrp}
+        return { stores[0][0]: stores[0][1] - cost}
 
     # this will only work if the numbers of stores is at a maneagable level
     # for 20 stores this would be 6840 permutations whereas for 100 stores this
@@ -47,7 +47,7 @@ def get_expected_values(stores, msrp = 10):
         for winner in winners:
             # we divide our profit by the number of winners since in the case of
             # a tie the sale will be awarded randomly to one of them.
-            profits[winner[0]] += (winner[1] - msrp) / len(winners)
+            profits[winner[0]] += (winner[1] - cost) / len(winners)
 
     return {  name: profits[name] / count_of_permutations for name, _ in stores }
 
@@ -59,7 +59,7 @@ def _run_get_expected_values(args):
         get_expected_values([*other_stores, (MY_STORE, my_price)])
     )
 
-def get_optimal_price(other_stores, msrp = 10):
+def get_optimal_price(other_stores, cost = 10):
     # if we are the only store we want to set our price as high as possible
     if (not len(other_stores)): return 9999999999
 
@@ -73,7 +73,7 @@ def get_optimal_price(other_stores, msrp = 10):
     # this could for sure be optimized, there are high guesses that we know
     # for sure can never be profitable
     my_prices = list(set(itertools.chain.from_iterable(
-        (floor(store[1]), max([msrp, floor(store[1]) - 0.01]))
+        (max([cost, floor(store[1])]), max([cost, floor(store[1]) - 0.01]))
         for store in other_stores
     )))
 
@@ -85,7 +85,7 @@ def get_optimal_price(other_stores, msrp = 10):
     )
 
     highest_ev = 0
-    best_price = msrp
+    best_price = cost
     best_expected_values = None
 
     for my_price, expected_values in results:
