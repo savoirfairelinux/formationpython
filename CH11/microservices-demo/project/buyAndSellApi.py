@@ -22,11 +22,11 @@ class DBConnect:
             raise
 
     def connect(self):
-        return pymysql.connect(db=self.dbName, 
-                               user=self.dbUser, 
-                               host=self.dbServerName, 
+        return pymysql.connect(db=self.dbName,
+                               user=self.dbUser,
+                               host=self.dbServerName,
                                port=self.dbPort
-                              ) 
+                              )
 
     def buyProduct(self):
         connection = self.connect()
@@ -50,7 +50,22 @@ class DBConnect:
                 connection.close()
         else:
             raise falcon.HTTPInternalServerError
-    
+
+    def setProductPrice(self, price):
+        connection = self.connect()
+        if connection:
+            try:
+                cr = connection.cursor()
+                sql_query = 'UPDATE sock SET price="' + str(price) + '" where name="' + str(self.product_name) + '"'
+                cr.execute(sql_query)
+                connection.commit()
+            except Exception as e:
+                print(e)
+            finally:
+                connection.close()
+        else:
+            raise falcon.HTTPInternalServerError
+
     def productInformation(self):
         connection = self.connect()
         if connection:
@@ -66,10 +81,10 @@ class DBConnect:
                 connection.close()
         else:
             return False
-        
+
 
 class buyProduct:
-    """ 
+    """
     This Class is implemented to Buy a Product
     """
     def on_put(self, req, resp, name):
@@ -87,7 +102,7 @@ class buyProduct:
             resp.status = falcon.HTTP_400
 
 class productInformation:
-    """ 
+    """
     This Class is implemented to return product information
     """
     def on_get(self, req, resp, name):
