@@ -1,5 +1,4 @@
 from .die import Die
-from .utils import i_just_throw_an_exception
 
 class GameRunner:
 
@@ -15,7 +14,7 @@ class GameRunner:
     def answer(self):
         total = 0
         for die in self.dice:
-            total += 1
+            total += die.value
         return total
 
     @classmethod
@@ -23,16 +22,22 @@ class GameRunner:
         # Probably counts wins or something.
         # Great variable name, 10/10.
         c = 0
+        runner = cls()
         while True:
-            runner = cls()
 
             print("Round {}\n".format(runner.round))
 
             for die in runner.dice:
+                die.roll()
                 print(die.show())
 
             guess = input("Sigh. What is your guess?: ")
-            guess = int(guess)
+            try:
+                guess = int(guess)
+            except ValueError as e:
+                print('Please enter a valid guess! Numbers only!')
+                input('okay?')
+                continue
 
             if guess == runner.answer():
                 print("Congrats, you can add like a 5 year old...")
@@ -54,7 +59,8 @@ class GameRunner:
 
             prompt = input("Would you like to play again?[Y/n]: ")
 
-            if prompt == 'y' or prompt == '':
+            if prompt.lower() == 'y' or prompt == '':
                 continue
             else:
-                i_just_throw_an_exception()
+                input("Thank you for playing")
+                break
