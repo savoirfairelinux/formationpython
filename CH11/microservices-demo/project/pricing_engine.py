@@ -34,7 +34,10 @@ def get_expected_values(stores, cost = 10):
     # for 20 stores this would be 6840 permutations whereas for 100 stores this
     # would be 970200 permutations.
     number_of_stores_selected_by_customers = min([3, number_of_stores])
-    permutations = itertools.permutations(stores, )
+    permutations = itertools.permutations(
+        stores,
+        number_of_stores_selected_by_customers
+    )
 
     count_of_permutations = math.factorial(number_of_stores) / math.factorial(
         number_of_stores - number_of_stores_selected_by_customers
