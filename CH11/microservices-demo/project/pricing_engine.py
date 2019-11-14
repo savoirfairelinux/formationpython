@@ -3,7 +3,7 @@ import json
 import math
 import decimal
 import requests
-import threading
+from threading import Thread
 
 from multiprocessing import Pool
 from collections import defaultdict
@@ -59,7 +59,7 @@ def _run_get_expected_values(args):
         get_expected_values([*other_stores, (MY_STORE, my_price)])
     )
 
-def get_optimal_price(other_stores, cost = 10):
+def get_optimal_price(other_stores, cost = 10.00):
     # if we are the only store we want to set our price as high as possible
     if (not len(other_stores)): return 9999999999
 
@@ -128,9 +128,8 @@ def run_price_updater(stores, connection):
     while True:
         if (not should_update_price): continue
         should_update_price = False
-        # we copy the prices here
-        # so that anothre thread doesn't overwrite them while
-        # we are processing them
+        # we copy the prices here so that another thread doesn't overwrite them
+        # while we are processing them.
         stores = stores.copy()
         new_price = get_optimal_price(list(stores.items()))
         print(f'setting price to {new_price}$')
@@ -144,10 +143,15 @@ def main():
     connection = DBConnect('Colourful')
     stores = {}
 
-    threads = [
-        threading.Thread(target=run_price_poller_for, args=(url, stores))
+    price_poller_threads = (
+        Thread(target=run_price_poller_for, args=(url, stores))
         for url in STORE_URLS
-    ] + [threading.Thread(target=run_price_updater, args=(stores, connection))]
+    )
+
+    threads = [
+        Thread(target=run_price_updater, args=(stores, connection)),
+        *price_poller_threads
+    ]
 
     for thread in threads:
         thread.start()
