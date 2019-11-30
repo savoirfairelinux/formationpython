@@ -1,4 +1,5 @@
-from dicegame.runner import GameRunner
+import unittest as ut
+from ..dicegame.runner import GameRunner
 
 
 def main():
