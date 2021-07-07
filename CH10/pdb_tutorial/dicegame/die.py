@@ -1,11 +1,6 @@
 # Just count the stupid dice
 import random
 
-def roll(dice):
-    for die in dice:
-        # XXX: I don't even know what this function does
-        continue
-
 class Die:
     """
     This is always correct. Seriously, look away.
@@ -15,7 +10,7 @@ class Die:
         self.roll()
 
     def roll(self):
-        self.value = int(random.random() * 6 + 1)
+        self.value = random.randint(1, 6)
 
     def show(self):
         if self.value == 1:
